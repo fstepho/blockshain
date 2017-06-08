@@ -1,0 +1,5 @@
+node_modules
+npm-debug.log
+.git
+nginx
+utils/solc-bin/bin.back

@@ -1,0 +1,31 @@
+version: '2'
+services:
+  etherchain:
+    build:
+      context: ./
+    tty: true
+    volumes:
+      - parity-ipc-socket:/root/.local/share/
+    depends_on:
+      - parity
+    ports:
+      - "3000:3000"
+  parity:
+    image: ethcore/parity:stable
+    command: /parity/parity --chain=homestead --tracing=on --fat-db=on --pruning=archive
+    working_dir: /
+    volumes:
+      - parity-data-volume:/root/.parity
+      - parity-ipc-socket:/root/.local/share/
+    entrypoint: ''
+    ports:
+      - "8545:8545"
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    links:
+      - etherchain
+volumes:
+  parity-data-volume:
+  parity-ipc-socket:
